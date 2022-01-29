@@ -105,22 +105,27 @@ function declareWinner(who) {
   document.querySelector(".end .text").innerText = who;
 }
 
-function emptySquares() {
+function emptySquaresE() {
+  var empty = gameBoard.filter((s) => typeof s == "number");
+  x = Math.floor(
+  Math.random() * gameBoard.filter((s) => typeof s == "number").length);
+  return empty[x];
+}
+
+function emptySquaresH() {
   return gameBoard.filter((s) => typeof s == "number");
 }
 
 function nextBestSpotH() {
-   return minimax(gameBoard, computer).index;
-    // return emptySquares()[0]
+  return minimax(gameBoard, computer).index;
 }
 
 function nextBestSpotE() {
-  // return minimax(gameBoard, computer).index;
-   return emptySquares()[0]
+  return emptySquaresE();
 }
 
 function checkDrawH() {
-  if (emptySquares().length == 0) {
+  if (emptySquaresH().length == 0) {
     for (var i = 0; i < cells.length; i++) {
       cells[i].style.backgroundColor = "#BFBFBF";
       cells[i].removeEventListener("click", turnClickH, false);
@@ -132,7 +137,7 @@ function checkDrawH() {
 }
 
 function checkDrawE() {
-  if (emptySquares().length == 0) {
+  if (emptySquaresE().length == 0) {
     for (var i = 0; i < cells.length; i++) {
       cells[i].style.backgroundColor = "#BFBFBF";
       cells[i].removeEventListener("click", turnClickE, false);
@@ -143,9 +148,8 @@ function checkDrawE() {
   return false;
 }
 
-
 function minimax(newBoard, whoPlayed) {
-  var availSpots = emptySquares();
+  var availSpots = emptySquaresH();
 
   if (checkWin(newBoard, player)) {
     return { score: -10 };
